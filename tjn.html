@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <!-- 手机适配核心配置 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>田佳凝 生日快乐</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 页面整体：竖版全屏、暖光柔光、禁止选中 */
+        body {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #FFD6E0 0%, #C1E3FF 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: "微软雅黑", sans-serif;
+            overflow: hidden;
+            /* 暖光柔光效果 */
+            filter: brightness(1.1) contrast(1.05);
+            user-select: none;
+        }
+
+        /* 贺卡主体：竖版比例、手机适配最大宽度 */
+        .card {
+            width: 100%;
+            max-width: 420px;
+            height: 90vh;
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(255, 182, 193, 0.3);
+        }
+
+        /* 装饰：浮动气球 */
+        .balloon {
+            position: absolute;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            animation: float 6s ease-in-out infinite;
+        }
+        .balloon1 { left: 10%; top: 15%; width: 40px; height: 50px; background: #FFC2E2; animation-delay: 0s; }
+        .balloon2 { right: 15%; top: 20%; width: 35px; height: 45px; background: #A7D9FF; animation-delay: 1s; }
+        .balloon3 { left: 20%; top: 70%; width: 30px; height: 40px; background: #FFE194; animation-delay: 2s; }
+        .balloon4 { right: 10%; top: 65%; width: 38px; height: 48px; background: #C8FFD4; animation-delay: 3s; }
+
+        /* 装饰：闪烁星星 */
+        .star {
+            position: absolute;
+            color: #FFF9C4;
+            font-size: 12px;
+            animation: sparkle 2s infinite;
+        }
+        .star1 { left: 5%; top: 5%; }
+        .star2 { right: 8%; top: 10%; }
+        .star3 { left: 15%; bottom: 10%; }
+        .star4 { right: 20%; bottom: 15%; }
+
+        /* 装饰：彩带 */
+        .ribbon {
+            position: absolute;
+            width: 8px;
+            background: linear-gradient(#FFC2E2, #A7D9FF);
+            border-radius: 4px;
+        }
+        .ribbon1 { left: 25%; top: 0; height: 100px; transform: rotate(15deg); }
+        .ribbon2 { right: 30%; top: 0; height: 120px; transform: rotate(-10deg); }
+
+        /* Q版软萌兔子 */
+        .rabbit {
+            position: absolute;
+            top: 22%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 220px;
+            height: 280px;
+        }
+        /* 兔子耳朵 */
+        .ear {
+            position: absolute;
+            width: 35px;
+            height: 90px;
+            background: #FFFFFF;
+            border-radius: 50px;
+            box-shadow: inset 0 0 10px #FFD6E0;
+        }
+        .ear-left { left: 40px; top: -20px; transform: rotate(-10deg); }
+        .ear-right { right: 40px; top: -20px; transform: rotate(10deg); }
+        /* 兔子脑袋 */
+        .head {
+            position: absolute;
+            width: 180px;
+            height: 160px;
+            background: #FFFFFF;
+            border-radius: 50%;
+            top: 40px;
+            left: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        /* 兔子眼睛/腮红 */
+        .eye {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: #555;
+            border-radius: 50%;
+            top: 70px;
+        }
+        .eye-left { left: 50px; }
+        .eye-right { right: 50px; }
+        .blush {
+            position: absolute;
+            width: 25px;
+            height: 15px;
+            background: rgba(255,182,193,0.4);
+            border-radius: 50%;
+            top: 90px;
+        }
+        .blush-left { left: 30px; }
+        .blush-right { right: 30px; }
+
+        /* 核心：蛋糕（点击触发祝福） */
+        .cake {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 160px;
+            height: 100px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            z-index: 10;
+        }
+        .cake:hover { transform: translateX(-50%) scale(1.05); }
+        /* 蛋糕主体 */
+        .cake-body {
+            width: 100%;
+            height: 70px;
+            background: #FFFFFF;
+            border-radius: 15px;
+            box-shadow: inset 0 0 20px #FFD6E0;
+        }
+        /* 蛋糕奶油 */
+        .cream {
+            width: 100%;
+            height: 25px;
+            background: #FFC2E2;
+            border-radius: 50px 50px 0 0;
+        }
+        /* 蜡烛 */
+        .candle {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 20px;
+            background: #A7D9FF;
+            border-radius: 4px;
+        }
+        .flame {
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 10px;
+            background: #FFE194;
+            border-radius: 50%;
+            animation: flame 1s infinite alternate;
+        }
+
+        /* 祝福文字：中心留白，默认隐藏，点击显示 */
+        .blessing {
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            color: #7A9DFF;
+            line-height: 1.8;
+            opacity: 0;
+            transition: opacity 1s ease;
+            z-index: 5;
+            text-shadow: 0 2px 4px rgba(255,255,255,0.8);
+        }
+
+        /* 动画：气球浮动 */
+        @keyframes float {
+            0%,100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+        /* 动画：星星闪烁 */
+        @keyframes sparkle {
+            0%,100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+        /* 动画：蜡烛火焰 */
+        @keyframes flame {
+            0% { transform: translateX(-50%) scale(1); }
+            100% { transform: translateX(-50%) scale(1.2); }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <!-- 装饰元素 -->
+        <div class="star star1">⭐</div>
+        <div class="star star2">⭐</div>
+        <div class="star star3">⭐</div>
+        <div class="star star4">⭐</div>
+        <div class="balloon balloon1"></div>
+        <div class="balloon balloon2"></div>
+        <div class="balloon balloon3"></div>
+        <div class="balloon balloon4"></div>
+        <div class="ribbon ribbon1"></div>
+        <div class="ribbon ribbon2"></div>
+
+        <!-- Q版兔子 -->
+        <div class="rabbit">
+            <div class="ear ear-left"></div>
+            <div class="ear ear-right"></div>
+            <div class="head">
+                <div class="eye eye-left"></div>
+                <div class="eye eye-right"></div>
+                <div class="blush blush-left"></div>
+                <div class="blush blush-right"></div>
+            </div>
+            <!-- 点击蛋糕 -->
+            <div class="cake" id="cake">
+                <div class="candle">
+                    <div class="flame"></div>
+                </div>
+                <div class="cream"></div>
+                <div class="cake-body"></div>
+            </div>
+        </div>
+
+        <!-- 专属祝福文字 -->
+        <div class="blessing" id="blessing">
+            祝田佳凝生日快乐<br>
+            每天开心 每天快乐<br>
+            我的理科学霸✨
+        </div>
+    </div>
+
+    <script>
+        // 获取蛋糕和祝福元素
+        const cake = document.getElementById('cake');
+        const blessing = document.getElementById('blessing');
+
+        // 点击蛋糕 → 显示祝福
+        cake.addEventListener('click', function() {
+            blessing.style.opacity = '1';
+        });
+    </script>
+</body>
+</html>
